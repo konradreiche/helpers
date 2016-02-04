@@ -1,0 +1,33 @@
+{
+  "name": "helpers",
+  "version": "1.0.0",
+  "description": "Crowdsource every day desktop problems into the cloud.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jshint libs/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/platzhirsch/helpers.git"
+  },
+  "keywords": [
+    "app",
+    "browser",
+    "desktop",
+    "remote",
+    "chat"
+  ],
+  "author": "Konrad Reiche",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/platzhirsch/helpers/issues"
+  },
+  "homepage": "https://github.com/platzhirsch/helpers#readme",
+  "devDependencies": {
+    "babel-core": "^6.4.0"
+  },
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
