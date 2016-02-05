@@ -8,6 +8,14 @@ const app     = express();
 
 app.use(express.static('views'));
 
-app.listen(4000, function() {
+const privateKey = fs.readFileSync('etc/ssl/private/server.key');
+const certificate = fs.readFileSync('etc/ssl/certs/server.crt');
+
+const server = https.createServer({
+  key: privateKey,
+  cert: certificate
+}, app);
+
+server.listen(4000, function() {
   console.log('Started Express server');
 });
