@@ -2,5 +2,6 @@
   "node": true,
   "esnext": true,
   "strict": true,
-  "predef": [ "-Promise" ]
+  "browser": true,
+  "predef": [ "-Promise", "chrome" ]
 }
