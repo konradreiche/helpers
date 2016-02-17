@@ -7,6 +7,7 @@ const fs      = require('fs');
 const app     = express();
 
 app.use(express.static('views'));
+app.use('/dist', express.static('dist'));
 
 const privateKey = fs.readFileSync('etc/ssl/private/server.key');
 const certificate = fs.readFileSync('etc/ssl/certs/server.crt');
