@@ -1,32 +1,26 @@
+// Background page, which is responsible for choosing media source
 "use strict";
 
-// Invoke the Desktop Capture API to capture the screen's media stream
-const session = ['screen', 'window'];
+const chooseDesktopMedia = chrome.desktopCapture.chooseDesktopMedia;
+const streamIdCallback = function (message, callback) {
+  return function (streamId) {
+    message.type = 'gotScreen';
+    message.sourceId = streamId;
+    callback(message);
+    return false;
+  };
+};
 
-chrome.runtime.onConnect.addListener(function (port) {
-  port.onMessage.addListener(portOnMessageHanlder);
-
-  // Called for each message from content.js
-  function portOnMessageHanlder(message) {
-    if (message == 'get-sourceId') {
-      chrome.desktopCapture.chooseDesktopMedia(session, port.sender.tab, onAccessApproved);
-    }
-  }
-
-  // Getting the source id
-  // sourceId will be empty if permission is denied
-  function onAccessApproved(sourceId) {
-    console.log('sourceId', sourceId);
-
-    // if "cancel" button is clicked
-    if (!sourceId || !sourceId.length) {
-      return port.postMessage('PermissionDeniedError');
-    }
-
-    // "ok" button is clicked; share "sourceId" with the
-    // content-script which will forward it to the webpage
-    port.postMessage({
-      sourceId: sourceId
-    });
+chrome.runtime.onMessageExternal.addListener(function (message, sender, callback) {
+  switch(message.type) {
+    case 'getScreen':
+      let sourceTypes = message.options || ['screen', 'window'];
+      let pending = chooseDesktopMedia(sourceTypes, sender.tab, streamIdCallback(message, callback));
+      return true;
+    case 'cancelGetScreen':
+      chrome.desktopCapture.cancelChooseDesktopMedia(message.request);
+      message.type = 'canceledGetScreen';
+      callback(message);
+      return false;
   }
 });
