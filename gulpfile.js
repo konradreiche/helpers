@@ -4,11 +4,14 @@
 const gulp = require('gulp');
 
 // Include plugins
-const babel  = require('gulp-babel');
-const jshint = require('gulp-jshint');
-const concat = require('gulp-concat');
-const uglify = require('gulp-uglify');
-const rename = require('gulp-rename');
+const babel      = require('gulp-babel');
+const jshint     = require('gulp-jshint');
+const concat     = require('gulp-concat');
+const uglify     = require('gulp-uglify');
+const rename     = require('gulp-rename');
+const source     = require('vinyl-source-stream');
+const buffer     = require('vinyl-buffer');
+const browserify = require('browserify');
 
 gulp.task('babel', () => {
   return gulp.src('chrome/**/*.js')
@@ -29,12 +32,14 @@ gulp.task('lint', function() {
   .pipe(jshint.reporter('default'));
 });
 
-// Concatenate & minify JavaScript
+// Apply Browserify, concatenate & minify JavaScript
 gulp.task('scripts', function() {
-  return gulp.src('libs/**/*.js')
-  .pipe(concat('all.js'))
+  return browserify('app/app.js')
+  .bundle()
+  .pipe(source('dist.js'))
   .pipe(gulp.dest('dist'))
-  .pipe(rename('all.min.js'))
+  .pipe(buffer())
+  .pipe(rename('dist.min.js'))
   .pipe(uglify())
   .pipe(gulp.dest('dist'));
 });
