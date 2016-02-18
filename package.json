@@ -37,6 +37,8 @@
   },
   "dependencies": {
     "express": "^4.13.4",
-    "getscreenmedia": "^1.5.3"
+    "getscreenmedia": "^1.5.3",
+    "socket.io": "^1.4.5",
+    "socket.io-client": "^1.4.5"
   }
 }
