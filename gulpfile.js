@@ -15,7 +15,7 @@ const browserify = require('browserify');
 
 gulp.task('babel', () => {
   return gulp.src('chrome/**/*.js')
-  .pipe(babel({ presets: ['es2015'] }))
+G .pipe(babel({ presets: ['es2015'] }))
   .pipe(gulp.dest('dist/chrome/'));
 });
 
@@ -34,19 +34,19 @@ gulp.task('lint', function() {
 
 // Apply Browserify, concatenate & minify JavaScript
 gulp.task('scripts', function() {
-  return browserify('app/app.js')
+  return browserify({entries: ['app/app.js', 'app/controllers.js', 'app/services.js']})
   .bundle()
   .pipe(source('dist.js'))
   .pipe(gulp.dest('dist'))
   .pipe(buffer())
   .pipe(rename('dist.min.js'))
-  .pipe(uglify())
+  .pipe(uglify()).on('error', console.log)
   .pipe(gulp.dest('dist'));
 });
 
 // Watch files for changes
 gulp.task('watch', function() {
-  gulp.watch(['app/app.js', 'libs/**/*.js', 'chrome/**/*.js'], ['lint', 'scripts']);
+  gulp.watch(['app/**/*.js', 'libs/**/*.js', 'chrome/**/*.js'], ['lint', 'scripts']);
 });
 
 // Default Task

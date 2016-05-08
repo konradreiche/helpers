@@ -3,5 +3,10 @@
   "esnext": true,
   "strict": true,
   "browser": true,
-  "predef": [ "-Promise", "chrome" ]
+  "angular": true,
+  "predef": [ "-Promise", "chrome" ],
+  "globals": {
+    "ng": true,
+    "angular": true
+  }
 }

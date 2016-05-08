@@ -1,14 +1,19 @@
 "use strict";
 
-const getScreenMedia = require('getscreenmedia');
-const io = require('socket.io-client');
-const socket = io('https://localhost:4000');
+const helpersHQ = angular.module('helpersHQ', ['ngRoute', 'helpersControllers', 'helpersServices']);
 
-getScreenMedia(function (err, stream) {
-  // Browser does not support user media or if the user denies the request
-  if (err) {
-    console.log('Failed');
-  } else {
-    console.log('Stream', stream);
-  }
-});
+helpersHQ.config(['$routeProvider', function($routeProvider) {
+  $routeProvider
+  .when('/questions', {
+    templateUrl: 'partials/questions.html',
+    controller: 'QuestionCtrl'
+  })
+  .when('/questions/:questionId', {
+    templateUrl: 'partials/session.html',
+    controller: 'SessionCtrl'
+  })
+  .otherwise({
+    redirectTo: '/questions'
+  });
+}]);
+
