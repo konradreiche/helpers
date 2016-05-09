@@ -3,7 +3,6 @@
   "esnext": true,
   "strict": true,
   "browser": true,
-  "angular": true,
   "predef": [ "-Promise", "chrome" ],
   "globals": {
     "ng": true,

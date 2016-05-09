@@ -1,5 +1,7 @@
 Ask your question:
 <input ng-model="questionText" ng-keyup="$event.keyCode == 13 && submitQuestion()">
 <ul>
-  <li ng-repeat="question in questions | filter:search | orderBy:orderProp">{{question.text}}</li>
+  <li ng-repeat="question in questions | filter:search | orderBy:orderProp">
+    <a href="/questions/{{question.id}}">{{question.text}}</a>
+  </li>
 </ul>
