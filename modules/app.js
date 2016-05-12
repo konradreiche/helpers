@@ -23,6 +23,7 @@ server.listen(4000, function() {
 });
 
 io.on('connection', function(socket) {
-  socket.on('offer', function(offer) {
+  socket.on('answer', function() {
+    socket.emit('offer');
   });
 });

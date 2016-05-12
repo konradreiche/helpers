@@ -6,6 +6,7 @@
   "predef": [ "-Promise", "chrome" ],
   "globals": {
     "ng": true,
-    "angular": true
+    "angular": true,
+    "io": true
   }
 }

@@ -16,6 +16,10 @@ helpersControllers.controller('QuestionCtrl', ['$scope', 'Question', function ($
       });
     }
   };
+}]);
 
 
+helpersControllers.controller('SessionCtrl', ['$scope', 'socket', function ($scope, socket) {
+  socket.on('offer', () => $scope.message = 'Received an offer');
+  socket.emit('answer');
 }]);
