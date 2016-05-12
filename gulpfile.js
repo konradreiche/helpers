@@ -15,7 +15,7 @@ const browserify = require('browserify');
 
 gulp.task('babel', () => {
   return gulp.src('chrome/**/*.js')
-G .pipe(babel({ presets: ['es2015'] }))
+  .pipe(babel({ presets: ['es2015'] }))
   .pipe(gulp.dest('dist/chrome/'));
 });
 
@@ -39,6 +39,7 @@ gulp.task('scripts', function() {
   .pipe(source('dist.js'))
   .pipe(gulp.dest('dist'))
   .pipe(buffer())
+  .pipe(babel({ presets: ['es2015'] }))
   .pipe(rename('dist.min.js'))
   .pipe(uglify()).on('error', console.log)
   .pipe(gulp.dest('dist'));
