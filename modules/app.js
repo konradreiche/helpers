@@ -16,14 +16,8 @@ const privateKey = fs.readFileSync('etc/ssl/private/server.key');
 const certificate = fs.readFileSync('etc/ssl/certs/server.crt');
 
 const server = https.createServer({ key: privateKey, cert: certificate }, app);
-const io = sio(server);
+require('./intercom')(server);
 
 server.listen(4000, function() {
   console.log('Started Express server');
-});
-
-io.on('connection', function(socket) {
-  socket.on('answer', function() {
-    socket.emit('offer');
-  });
 });
