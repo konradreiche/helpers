@@ -9,6 +9,7 @@ const jshint     = require('gulp-jshint');
 const concat     = require('gulp-concat');
 const uglify     = require('gulp-uglify');
 const rename     = require('gulp-rename');
+const sass       = require('gulp-sass');
 const source     = require('vinyl-source-stream');
 const buffer     = require('vinyl-buffer');
 const browserify = require('browserify');
@@ -32,6 +33,12 @@ gulp.task('lint', function() {
   .pipe(jshint.reporter('default'));
 });
 
+gulp.task('sass', function () {
+  return gulp.src('sass/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('css'));
+});
+
 // Apply Browserify, concatenate & minify JavaScript
 gulp.task('scripts', function() {
   return browserify({entries: ['app/app.js', 'app/controllers.js', 'app/services.js']})
@@ -47,8 +54,8 @@ gulp.task('scripts', function() {
 
 // Watch files for changes
 gulp.task('watch', function() {
-  gulp.watch(['app/**/*.js', 'libs/**/*.js', 'chrome/**/*.js'], ['lint', 'scripts']);
+  gulp.watch(['app/**/*.js', 'libs/**/*.js', 'chrome/**/*.js', 'sass/**/*.sass'], ['lint', 'scripts', 'sass']);
 });
 
 // Default Task
-gulp.task('default', ['lint', 'babel', 'chrome', 'scripts', 'watch']);
+gulp.task('default', ['lint', 'babel', 'chrome', 'scripts', 'sass', 'watch']);
