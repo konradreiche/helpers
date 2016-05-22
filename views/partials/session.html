@@ -1,4 +1,9 @@
-<div class="chat-control">
-  <input type="text">
-  <button>Send</button>
+<div class="chat">
+  <ul>
+    <li ng-repeat="message in messages">{{message.text}}</li>
+  </ul>
+  <form class="chat-control" ng-submit="submit()">
+    <input type="text" ng-model="text">
+    <input type="submit" value="Send">
+  </form>
 </div>

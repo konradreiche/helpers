@@ -18,8 +18,22 @@ helpersControllers.controller('QuestionCtrl', ['$scope', 'Question', function ($
   };
 }]);
 
+helpersControllers.controller('SessionCtrl', ['$scope', '$location', 'socket', 'question', function ($scope, $location, socket, question) {
+  $scope.question = question;
+  $scope.messages = [];
 
-helpersControllers.controller('SessionCtrl', ['$scope', 'socket', function ($scope, socket) {
-  socket.on('offer', () => $scope.message = 'Received an offer');
-  socket.emit('answer');
+  socket.emit('question:join', $scope.question.id);
+
+  socket.on('chat:message', function(message) {
+      $scope.messages.push(message);
+  });
+
+  $scope.submit = function() {
+  if ($scope.text) {
+      let message = {from: 0, text: $scope.text};
+      socket.emit('chat:message', message);
+      $scope.messages.push(message);
+      $scope.text = '';
+    }
+  };
 }]);

@@ -18,10 +18,15 @@ module.exports = {
     .then(() => res.sendStatus(200));
   },
 
-  query: function(req, result) {
+  query: function(req, res) {
     redis.scanAsync('0', 'MATCH', 'question:[^id]', 'COUNT', '100')
     .spread((cursor, keys) => Promise.resolve(keys))
     .map((id) => getQuestion(id))
-    .then((obj) => result.send(obj));
+    .then((obj) => res.send(obj));
+  },
+
+  get: function(req, res) {
+    const id = req.params.questionId;
+    redis.getAsync(`question:${id}`).then((obj) => res.send({id: id, text: obj}));
   }
 };

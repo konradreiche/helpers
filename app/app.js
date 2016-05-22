@@ -10,7 +10,12 @@ helpersHQ.config(['$routeProvider', function($routeProvider) {
   })
   .when('/questions/:questionId', {
     templateUrl: 'partials/session.html',
-    controller: 'SessionCtrl'
+    controller: 'SessionCtrl',
+    resolve: {
+      question: function($route, Question) {
+        return Question.get({questionId: $route.current.params.questionId});
+      }
+    }
   })
   .otherwise({
     redirectTo: '/questions'

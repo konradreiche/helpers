@@ -2,10 +2,10 @@
 
 const express    = require('express');
 const https      = require('https');
-const http       = require('http');
 const bodyParser = require('body-parser');
-const fs         = require('fs');
 const sio        = require('socket.io');
+const fs         = require('fs');
+const intercom   = require('./intercom');
 const router     = require('./router');
 const app        = express();
 
@@ -16,7 +16,9 @@ const privateKey = fs.readFileSync('etc/ssl/private/server.key');
 const certificate = fs.readFileSync('etc/ssl/certs/server.crt');
 
 const server = https.createServer({ key: privateKey, cert: certificate }, app);
-require('./intercom')(server);
+
+const io = sio(server);
+io.on('connect', intercom);
 
 server.listen(4000, function() {
   console.log('Started Express server');

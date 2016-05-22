@@ -1,27 +1,19 @@
 "use strict";
 
-const sio = require('socket.io');
-const clients = {};
+const questionsBySocket = {};
 
-function numClients() {
-  return Object.keys(clients).length;
-}
+module.exports = function(socket) {
+  socket.on('question:join', function(question) {
+    socket.join(question);
+    questionsBySocket[socket.id] = question;
+  });
 
-module.exports = function(server) {
-  const io = sio(server);
-  io.on('connect', function(socket) {
+  socket.on('chat:message', function(message) {
+    const question = questionsBySocket[socket.id];
+    socket.broadcast.to(question).emit('chat:message', message);
+  });
 
-    console.log('User connected');
-    clients[socket.id] = socket;
-    console.log(`Size:${numClients()}`);
-
-    socket.on('chat message', function(message) {
-      console.log(`Message: ${message}`);
-    });
-
-    socket.on('disconnect', () => {
-      console.log('User disconnected');
-      delete clients[socket.id];
-    });
+  socket.on('disconnect', function() {
+    delete questionsBySocket[socket.id];
   });
 };

@@ -11,5 +11,6 @@ router.use('/css', express.static('css'));
 
 router.post('/questions', Questions.create);
 router.get('/questions', Questions.query);
+router.get('/questions/:questionId', Questions.get);
 
 module.exports = router;
