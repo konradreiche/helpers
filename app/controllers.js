@@ -18,9 +18,10 @@ helpersControllers.controller('QuestionCtrl', ['$scope', 'Question', function ($
   };
 }]);
 
-helpersControllers.controller('SessionCtrl', ['$scope', '$location', 'socket', 'question', function ($scope, $location, socket, question) {
+helpersControllers.controller('SessionCtrl', ['$scope', '$location', 'socket', 'question', 'messages',
+                              function ($scope, $location, socket, question, messages) {
   $scope.question = question;
-  $scope.messages = [];
+  $scope.messages = messages;
 
   socket.emit('question:join', $scope.question.id);
 

@@ -14,6 +14,9 @@ helpersHQ.config(['$routeProvider', function($routeProvider) {
     resolve: {
       question: function($route, Question) {
         return Question.get({questionId: $route.current.params.questionId});
+      },
+      messages: function($route, Message) {
+        return Message.query({questionId: $route.current.params.questionId});
       }
     }
   })
