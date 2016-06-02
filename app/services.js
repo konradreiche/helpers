@@ -10,6 +10,10 @@ helpersServices.factory('Message', ['$resource', function($resource) {
   return $resource('/questions/:questionId/messages');
 }]);
 
+helpersServices.factory('Answer', ['$resource', function($resource) {
+  return $resource('/questions/:questionId/answer');
+}]);
+
 helpersServices.factory('socket', function($rootScope) {
   const socket = io.connect();
   return {

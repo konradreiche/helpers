@@ -1,28 +1,44 @@
 "use strict";
 
 const redis   = require('./redis');
+const Answers = require('./answers');
 const Promise = require('bluebird');
 
-function getQuestion(id) {
-  return redis.getAsync(id).then(function(question) {
-    id = id.split(':').pop();
+function getQuestion(key) {
+  const id = key.split(':').pop();
+  return redis.getAsync(key).then(function(question) {
     return Promise.resolve({id: id, text: question});
   });
+}
+
+function sessionExists(answers) {
+  return function(key) {
+    const id = key.split(':').pop();
+    return !answers.includes(id);
+  };
+}
+
+function createQuestion(id, text) {
+  return redis.setAsync(`question:${id}`, text)
+  .then(() => { return Promise.resolve(id); });
 }
 
 module.exports = {
   create: function(req, res) {
     redis.incrAsync('question:id')
     .then(redis.getAsync('question:id'))
-    .then((id) => redis.setAsync(`question:${id}`, req.body.text))
-    .then(() => res.sendStatus(200));
+    .then((id) => createQuestion(id, req.body.text))
+    .then((id) => res.send({id: id}));
   },
 
   query: function(req, res) {
-    redis.scanAsync('0', 'MATCH', 'question:[^id]', 'COUNT', '100')
-    .spread((cursor, keys) => Promise.resolve(keys))
-    .map((id) => getQuestion(id))
-    .then((obj) => res.send(obj));
+    Answers.ids().then(function(answers) {
+      redis.scanAsync('0', 'MATCH', 'question:[^i^d]', 'COUNT', '100')
+      .spread((cursor, keys) => Promise.resolve(keys))
+      .filter(sessionExists(answers))
+      .map((key) => getQuestion(key))
+      .then((obj) => res.send(obj));
+    });
   },
 
   get: function(req, res) {

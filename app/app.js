@@ -20,6 +20,9 @@ helpersHQ.config(['$routeProvider', function($routeProvider) {
       }
     }
   })
+  .when('/questions/:questionId/answer', {
+    controller: 'AnswerCtrl'
+  })
   .otherwise({
     redirectTo: '/questions'
   });

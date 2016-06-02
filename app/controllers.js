@@ -2,7 +2,7 @@
 
 const helpersControllers = angular.module('helpersControllers', []);
 
-helpersControllers.controller('QuestionCtrl', ['$scope', 'Question', function ($scope, Question) {
+helpersControllers.controller('QuestionCtrl', ['$scope', '$location', '$http', 'Question', function ($scope, $location, $http, Question) {
   $scope.orderProp = 'age';
   $scope.questions = Question.query();
 
@@ -10,11 +10,16 @@ helpersControllers.controller('QuestionCtrl', ['$scope', 'Question', function ($
     if ($scope.questionText) {
       $scope.question = new Question({text: $scope.questionText});
       $scope.question.text = $scope.questionText;
-      $scope.question.$save(function() {
+      $scope.question.$save(function(question) {
         $scope.questionText = null;
         $scope.questions = Question.query();
+        $location.path(`/questions/${question.id}`);
       });
     }
+  };
+
+  $scope.answerQuestion = function(id) {
+    $http.post(`/questions/${id}/answer`, {id: id});
   };
 }]);
 
@@ -37,4 +42,8 @@ helpersControllers.controller('SessionCtrl', ['$scope', '$location', 'socket', '
       $scope.text = '';
     }
   };
+}]);
+
+helpersControllers.controller('AnswerCtrl', ['$scope', function ($scope) {
+
 }]);

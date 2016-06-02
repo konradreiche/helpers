@@ -1,2 +1,4 @@
-require('babel-core/register');
+require('babel-register')({
+  presets: ['es2017']
+});
 require('./modules/app.js');
