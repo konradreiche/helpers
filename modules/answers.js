@@ -5,7 +5,7 @@ const redis   = require('./redis');
 
 module.exports = {
   create: function(req, res) {
-    redis.setAsync(`answer:${req.body.id}`, true);
+    redis.setex(`answer:${req.body.id}`, 5 * 60, true);
   },
 
   query: function(req, res) {

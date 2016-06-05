@@ -1,6 +1,6 @@
 <div class="chat">
   <ul>
-    <li ng-repeat="message in messages">{{message.text}}</li>
+    <li ng-repeat="message in messages">{{message.from}}: {{message.text}}</li>
   </ul>
   <form class="chat-control" ng-submit="submit()">
     <input type="text" ng-model="text">

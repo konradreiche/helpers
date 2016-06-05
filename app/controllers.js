@@ -36,7 +36,7 @@ helpersControllers.controller('SessionCtrl', ['$scope', '$location', 'socket', '
 
   $scope.submit = function() {
   if ($scope.text) {
-      let message = {from: 0, text: $scope.text};
+      let message = {from: 'You', text: $scope.text};
       socket.emit('chat:message', message);
       $scope.messages.push(message);
       $scope.text = '';
