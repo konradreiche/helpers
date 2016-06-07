@@ -1,8 +1,10 @@
 "use strict";
 
+const getScreenMedia = require('getscreenmedia');
+
 const helpersControllers = angular.module('helpersControllers', []);
 
-helpersControllers.controller('QuestionCtrl', ['$scope', '$location', '$http', 'Question', function ($scope, $location, $http, Question) {
+helpersControllers.controller('QuestionCtrl', ['$scope', '$route', '$location', '$http', 'Question', function ($scope, $route, $location, $http, Question) {
   $scope.orderProp = 'age';
   $scope.questions = Question.query();
 
@@ -13,6 +15,7 @@ helpersControllers.controller('QuestionCtrl', ['$scope', '$location', '$http', '
       $scope.question.$save(function(question) {
         $scope.questionText = null;
         $scope.questions = Question.query();
+        $route.current.type = 'helper';
         $location.path(`/questions/${question.id}`);
       });
     }
@@ -23,10 +26,38 @@ helpersControllers.controller('QuestionCtrl', ['$scope', '$location', '$http', '
   };
 }]);
 
-helpersControllers.controller('SessionCtrl', ['$scope', '$location', 'socket', 'question', 'messages',
-                              function ($scope, $location, socket, question, messages) {
+helpersControllers.controller('SessionCtrl', ['$scope', '$route', '$location', 'socket', 'question', 'messages',
+                              function ($scope, $route, $location, socket, question, messages) {
   $scope.question = question;
   $scope.messages = messages;
+
+  socket.emit('question:join', $scope.question.id);
+
+  socket.on('chat:message', function(message) {
+      $scope.messages.push(message);
+  });
+
+  $scope.shareScreen = function() {
+    getScreenMedia(function (err, stream) {
+    });
+  };
+
+  $scope.submit = function() {
+  if ($scope.text) {
+      let message = {from: 'You', text: $scope.text};
+      socket.emit('chat:message', message);
+      $scope.messages.push(message);
+      $scope.text = '';
+    }
+  };
+}]);
+
+helpersControllers.controller('AnswerCtrl', ['$scope', '$route', '$location', 'socket', 'question', 'messages',
+                              function ($scope, $route, $location, socket, question, messages) {
+
+  $scope.question = question;
+  $scope.messages = messages;
+  $scope.helper = true;
 
   socket.emit('question:join', $scope.question.id);
 
@@ -42,8 +73,4 @@ helpersControllers.controller('SessionCtrl', ['$scope', '$location', 'socket', '
       $scope.text = '';
     }
   };
-}]);
-
-helpersControllers.controller('AnswerCtrl', ['$scope', function ($scope) {
-
 }]);
