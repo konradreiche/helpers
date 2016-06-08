@@ -1,6 +1,8 @@
 "use strict";
 
-const getScreenMedia = require('getscreenmedia');
+const getScreenMedia    = require('getscreenmedia');
+const PeerConnection    = require('rtcpeerconnection');
+const attachMediaStream = require('attachmediastream');
 
 const helpersControllers = angular.module('helpersControllers', []);
 
@@ -38,7 +40,19 @@ helpersControllers.controller('SessionCtrl', ['$scope', '$route', '$location', '
   });
 
   $scope.shareScreen = function() {
+    const config = {
+      'iceServers': [{
+        'url': 'stun:stun.l.google.com:19305'
+      }]
+    };
+
+    const pc = new PeerConnection(config);
     getScreenMedia(function (err, stream) {
+      if (err) {
+        console.log(err);
+      } else {
+        attachMediaStream(stream, document.getElementById('video'));
+      }
     });
   };
 
