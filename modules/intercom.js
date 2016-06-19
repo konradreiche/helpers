@@ -29,6 +29,21 @@ module.exports = function(socket) {
     socket.broadcast.to(question).emit('chat:message', message);
   });
 
+  socket.on('offer', function(offer) {
+    const question = questionsBySocket[socket.id];
+    socket.broadcast.to(question).emit('offer', offer);
+  });
+
+  socket.on('candidate', function(candidate) {
+    const question = questionsBySocket[socket.id];
+    socket.broadcast.to(question).emit('candidate', candidate);
+  });
+
+  socket.on('answer', function(answer) {
+    const question = questionsBySocket[socket.id];
+    socket.broadcast.to(question).emit('answer', answer);
+  });
+
   socket.on('disconnect', function() {
     delete questionsBySocket[socket.id];
   });
