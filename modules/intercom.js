@@ -1,6 +1,7 @@
 "use strict";
 
 const redis = require('./redis');
+const Questions = require('./questions');
 const questionsBySocket = {};
 const socketsByQuestion = {};
 
@@ -42,6 +43,13 @@ module.exports = function(socket) {
   socket.on('answer', function(answer) {
     const question = questionsBySocket[socket.id];
     socket.broadcast.to(question).emit('answer', answer);
+  });
+
+  socket.on('resolve', function() {
+    const question = questionsBySocket[socket.id];
+    Questions.destroy(question);
+    socket.emit('resolve');
+    socket.broadcast.to(question).emit('resolve');
   });
 
   socket.on('disconnect', function() {

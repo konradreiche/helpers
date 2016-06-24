@@ -41,6 +41,11 @@ module.exports = {
     });
   },
 
+  destroy: function(question) {
+    redis.delAsync(`question:${question}`);
+    redis.delAsync(`question:${question}:messages`);
+  },
+
   get: function(req, res) {
     const id = req.params.questionId;
     redis.getAsync(`question:${id}`).then((obj) => res.send({id: id, text: obj}));

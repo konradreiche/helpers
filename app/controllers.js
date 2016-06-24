@@ -46,6 +46,10 @@ helpersControllers.controller('SessionCtrl', ['$scope', '$route', '$location', '
       $scope.messages.push(message);
   });
 
+  socket.on('resolve', function() {
+    $location.path('/');
+  });
+
   $scope.shareScreen = function() {
     const pc = new PeerConnection(config);
     getScreenMedia(function (err, stream) {
@@ -89,6 +93,10 @@ helpersControllers.controller('SessionCtrl', ['$scope', '$route', '$location', '
    });
   };
 
+  $scope.resolve = function() {
+    socket.emit('resolve');
+  };
+
   $scope.submit = function() {
   if ($scope.text) {
       let message = {from: 'You', text: $scope.text};
@@ -112,6 +120,9 @@ helpersControllers.controller('AnswerCtrl', ['$scope', '$route', '$location', 's
       $scope.messages.push(message);
   });
 
+  socket.on('resolve', function() {
+    $location.path('/');
+  });
 
   const pc = new PeerConnection(config);
   socket.on('offer', function(offer) {
