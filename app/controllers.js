@@ -24,7 +24,7 @@ helpersControllers.controller('QuestionCtrl', ['$scope', '$route', '$location', 
         $scope.questionText = null;
         $scope.questions = Question.query();
         $route.current.type = 'helper';
-        $location.path(`/questions/${question.id}`);
+        $location.path(`/questions/${question.id}/waiting`);
       });
     }
   };
@@ -32,6 +32,15 @@ helpersControllers.controller('QuestionCtrl', ['$scope', '$route', '$location', 
   $scope.answerQuestion = function(id) {
     $http.post(`/questions/${id}/answer`, {id: id});
   };
+}]);
+
+helpersControllers.controller('WaitingCtrl', ['$scope', '$route', '$location', 'socket', 'question', function ($scope, $route, $location, socket, question) {
+
+  $scope.question = question;
+  socket.emit('question:join', $scope.question.id);
+  socket.on('question:join', function() {
+    $location.path(`/questions/${question.id}`);
+  });
 }]);
 
 helpersControllers.controller('SessionCtrl', ['$scope', '$route', '$location', 'socket', 'question', 'messages',

@@ -20,6 +20,7 @@ module.exports = function(socket) {
     }
 
     questionsBySocket[socket.id] = question;
+    socket.broadcast.to(question).emit('question:join');
   });
 
   socket.on('chat:message', function(message) {

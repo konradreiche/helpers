@@ -8,6 +8,15 @@ helpersHQ.config(['$routeProvider', function($routeProvider) {
     templateUrl: 'partials/questions.html',
     controller: 'QuestionCtrl'
   })
+  .when('/questions/:questionId/waiting', {
+    templateUrl: 'partials/waiting.html',
+    controller: 'WaitingCtrl',
+    resolve: {
+      question: function($route, Question) {
+        return Question.get({questionId: $route.current.params.questionId});
+      },
+    }
+  })
   .when('/questions/:questionId', {
     templateUrl: 'partials/session.html',
     controller: 'SessionCtrl',

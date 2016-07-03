@@ -1,0 +1,27 @@
+h3 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-top: 5em;
+}
+
+.loader {
+  font-size: 5em;
+  opacity: 0.8;
+  text-align: center;
+
+  span {
+    display: inline-block;
+    animation: pulse 0.4s alternate infinite ease-in-out;
+
+    &:nth-child(odd) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes pulse {
+  to {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+}
