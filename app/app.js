@@ -1,6 +1,6 @@
 "use strict";
 
-const helpersHQ = angular.module('helpersHQ', ['ngRoute', 'helpersControllers', 'helpersServices']);
+const helpersHQ = angular.module('helpersHQ', ['ngRoute', 'ngAnimate', 'helpersControllers', 'helpersServices']);
 
 helpersHQ.config(['$routeProvider', function($routeProvider) {
   $routeProvider

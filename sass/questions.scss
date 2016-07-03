@@ -1,0 +1,57 @@
+h1 {
+  font-size: 3em;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 0.25em;
+}
+
+.below {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 15em;
+}
+
+.choice-control {
+  margin: auto;
+  display: block;
+  width: 415px;
+
+  > button {
+    width: 180px;
+    text-align: center;
+    &:first-child {
+      margin-right: 50px;
+    }
+  }
+}
+
+input.question {
+  display: block;
+  margin: auto;
+  padding: 5px;
+  font-size: 1.25em;
+  width: 22em;
+}
+
+ul.questions {
+  margin: auto;
+  display: block;
+  width: 300px;
+}
+
+.show-hide {
+  transition: all linear 0.5s;
+}
+
+.show-hide.ng-hide {
+  opacity: 0;
+}
+
+.actions {
+  margin: auto;
+}

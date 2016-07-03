@@ -38,3 +38,6 @@ etc
 # Compiled files
 dist
 css
+
+# Exuberant Ctags
+tags

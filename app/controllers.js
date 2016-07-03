@@ -12,7 +12,6 @@ const config = {
   }]
 };
 
-
 helpersControllers.controller('QuestionCtrl', ['$scope', '$route', '$location', '$http', 'Question', function ($scope, $route, $location, $http, Question) {
   $scope.orderProp = 'age';
   $scope.questions = Question.query();

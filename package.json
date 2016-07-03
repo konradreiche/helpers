@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "angular": "^1.5.2",
+    "angular-animate": "^1.5.7",
     "angular-resource": "^1.5.3",
     "angular-route": "^1.5.3",
     "attachmediastream": "^1.4.1",

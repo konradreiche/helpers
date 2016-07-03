@@ -1,7 +1,12 @@
-Ask your question:
-<input ng-model="questionText" ng-keyup="$event.keyCode == 13 && submitQuestion()">
-<ul>
-  <li ng-repeat="question in questions | filter:search | orderBy:orderProp">
-    <a href="/#/questions/{{question.id}}/answer" ng-click="answerQuestion(question.id)">{{question.text}}</a>
-  </li>
-</ul>
+<div class="choice-control below show-hide" ng-hide="question || answer">
+  <button ng-click="question=true">I need help</button>
+  <button ng-click="answer=true">I want to help</button>
+</div>
+<div class="actions below">
+  <input class="question show-hide" ng-model="questionText" ng-show="question" type="text" placeholder="How can we help you?" ng-keyup="$event.keyCode == 13 && submitQuestion()">
+  <ul class="questions show-hide" ng-show="answer">
+    <li ng-repeat="question in questions | filter:search | orderBy:orderProp">
+      <a href="/#/questions/{{question.id}}/answer" ng-click="answerQuestion(question.id)">{{question.text}}</a>
+    </li>
+  </ul>
+</div>
