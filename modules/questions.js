@@ -18,6 +18,10 @@ function sessionExists(answers) {
   };
 }
 
+function isQuestion(key) {
+  return /question:\d+$/.test(key);
+}
+
 function createQuestion(id, text) {
   return redis.setAsync(`question:${id}`, text)
   .then(() => { return Promise.resolve(id); });
@@ -33,8 +37,9 @@ module.exports = {
 
   query: function(req, res) {
     Answers.ids().then(function(answers) {
-      redis.scanAsync('0', 'MATCH', 'question:[^i^d]', 'COUNT', '100')
+      redis.scanAsync('0', 'MATCH', 'question:*', 'COUNT', '100')
       .spread((cursor, keys) => Promise.resolve(keys))
+      .filter(isQuestion)
       .filter(sessionExists(answers))
       .map((key) => getQuestion(key))
       .then((obj) => res.send(obj));
